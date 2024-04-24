@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Chatbot</title>
+</head>
+<body>
+
+<h1>Simple Chatbot</h1>
+
+<div>
+    <form id="chat-form">
+        <input type="text" id="user_input" name="user_input" placeholder="Say something...">
+        <input type="submit" value="Send">
+    </form>
+</div>
+
+<div id="chatbox">
+    <!-- Chat messages will be displayed here -->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#chat-form').submit(function(e){
+            e.preventDefault();
+            var userInput = $('#user_input').val();
+
+            $.ajax({
+                url: '/get_response',
+                type: 'POST',
+                data: {user_input: userInput},
+                success: function(data){
+                    $('#chatbox').append('<p>User: ' + userInput + '</p>');
+                    $('#chatbox').append('<p>Bot: ' + data.response + '</p>');
+                    $('#user_input').val('');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
